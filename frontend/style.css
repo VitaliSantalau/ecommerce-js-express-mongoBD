@@ -51,6 +51,11 @@ header a {
   font-size: 3rem;
 }
 
+.cart, .signin {
+  font-size: 3rem;
+  margin-right: 2rem;
+}
+
 footer {
   background-color: #203040;
   color: #ffffff;
