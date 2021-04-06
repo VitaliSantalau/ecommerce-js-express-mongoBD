@@ -1,11 +1,14 @@
 import Error404Screen from './screens/Error404Screen';
 import HomeScreen from './screens/HomeScreen'
 import ProductScreen from './screens/ProductScreen';
+import CartScreen from './screens/CartScreen';
 import { parseRequestUrl } from './utils';
 
 const routes = {
   '/': HomeScreen,
   '/product/:id': ProductScreen,
+  '/cart/:id': CartScreen,
+  '/cart': CartScreen,
 }
 
 const router = async () => {
@@ -18,6 +21,7 @@ const router = async () => {
   
   const main = document.getElementById('main-container');
   main.innerHTML = await screen.render();
+  if (screen.after_render) await screen.after_render();
 };
 
 window.addEventListener('load', router);
