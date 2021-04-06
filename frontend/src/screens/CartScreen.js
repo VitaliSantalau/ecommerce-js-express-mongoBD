@@ -12,11 +12,24 @@ const addToCard = (item , forceUpdate = false) => {
   } else {
     cartItems = [...cartItems, item];
   }
+  if(forceUpdate) {
+    rerender(CartScreeen)
+  }
   setCartItems(cartItems);
 };
 
 const CartScreen = {
-  after_render: () => {},
+  after_render: () => {
+    const qtySelects = document.getElementsByClassName('qty-select');
+    Array.from(qtySelects).forEach(qtySelect => {
+      qtySelect.addEventListener('change', (e) => {
+        const item = getCartItems().find(x => x.product === qtySelect.id)
+        addToCard({ ...item, qty: Number(e.target.value) }, false)
+      })
+
+    });
+  },
+
   render: async () => {
     const request = parseRequestUrl();
     if(request.id) {
@@ -34,7 +47,7 @@ const CartScreen = {
     const cartItems = getCartItems();
 
     return `
-    <div class="cart">
+    <div class="content cart">
       <div class="cart-list">
         <ul class="cart-list-container">
           <li>
@@ -43,7 +56,7 @@ const CartScreen = {
           </li>
           ${
             cartItems.length === 0
-              ? '<div>Cart is empty.<a href="/#/">Go to shopping...<a></div>'
+              ? '<div>Cart is empty. <a href="/#/">Go to shopping...<a></div>'
               : cartItems.map(item => `
               <li>
                 <div class="cart-image">
@@ -56,9 +69,16 @@ const CartScreen = {
                     </a>
                   </div>
                   <div>
-                    Qty:<select class="qty-select" id="${item.product}">
-                          <option value="1">1</option>
-                        </select>
+                    Qty:
+                    <select class="qty-select" id="${item.product}">
+                    ${
+                      [...Array(item.countInStock).keys()].map(x => 
+                        (x+1) === item.qty
+                        ? `<option selected value="${x+1}">${x+1}</option>`
+                        : `<option value="${x+1}">${x+1}</option>`
+                        )
+                    }
+                    </select>
                     <button type="button" class="delete-button" id="${item.product}">Delete</button>
                   </div>
                 </div>
