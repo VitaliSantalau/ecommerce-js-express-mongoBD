@@ -3,12 +3,14 @@ import HomeScreen from './screens/HomeScreen'
 import ProductScreen from './screens/ProductScreen';
 import CartScreen from './screens/CartScreen';
 import { parseRequestUrl } from './utils';
+import SigninScreen from './screens/SigninScreen';
 
 const routes = {
   '/': HomeScreen,
   '/product/:id': ProductScreen,
   '/cart/:id': CartScreen,
   '/cart': CartScreen,
+  '/signin': SigninScreen,
 }
 
 const router = async () => {
