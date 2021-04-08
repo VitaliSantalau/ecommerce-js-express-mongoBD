@@ -17,7 +17,6 @@ const SigninScreen = {
   },
 
   render: () => {
-  
     return `
     <div class="form-container">
       <form id="signin-form">
