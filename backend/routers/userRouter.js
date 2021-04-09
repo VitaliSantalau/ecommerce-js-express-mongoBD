@@ -35,6 +35,7 @@ userRouter.post(
     } else {
       res.send({
         _id: signinUser.id,
+        name: signinUser.name,
         email: signinUser.email,
         password: signinUser.password,
         isAdmin: signinUser.isAdmin,
