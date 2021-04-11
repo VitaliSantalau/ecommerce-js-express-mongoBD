@@ -45,7 +45,7 @@ app.use((err, req, res, next) => {
   res.status(status).send({ message: err.message })
 })
 
-app.listen(5000, () => {
-  console.log('server at http://localhost:5000')
+app.listen(8000, () => {
+  console.log('server at http://localhost:8000')
 })
 

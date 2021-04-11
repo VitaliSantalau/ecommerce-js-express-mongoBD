@@ -10,3 +10,5 @@ export const generateToken = (user) => jwt.sign(
     },
     config.JWT_SECRET
   )
+
+  

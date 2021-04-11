@@ -7,7 +7,7 @@ const userRouter = express.Router();
 
 userRouter.get(
   "/createadmin", 
-  expressAsyncHandler (async (req, res) => {
+  expressAsyncHandler(async (req, res) => {
     try {
       const user = new User({
         name: 'admin',
@@ -43,6 +43,58 @@ userRouter.post(
       })
     }
   })
+);
+
+userRouter.post(
+  "/register", 
+  expressAsyncHandler (async (req, res) => {
+    const user = new User({
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password,
+    })
+    const createdUser = await user.save();
+    res.send(createdUser)
+    if(!createdUser) {
+      res.status(401).send({ message: "Invalid user data" })
+    } else {
+      res.send({
+        _id: createdUser.id,
+        name: createdUser.name,
+        email: createdUser.email,
+        password: createdUser.password,
+        isAdmin: createdUser.isAdmin,
+        token: generateToken(createdUser)
+      })
+    }
+  })
+);
+
+userRouter.put(
+  "/:id", 
+  expressAsyncHandler (async (req, res) => {
+    const user = await User.findById(req.params.id) 
+
+    if(!user) {
+      res.status(404).send({ message: "User not found" })
+    } else {
+      user.name = req.body.name || user.name;
+      user.email = req.body.email || user.email;
+      user.password = req.body.password || user.password;
+   
+      const updatedUser = await user.save();
+
+      res.send({
+        _id: updatedUser.id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        password: updatedUser.password,
+        isAdmin: updatedUser.isAdmin,
+        token: generateToken(updatedUser)
+      })
+    }
+  })
 )
+
 
 export default userRouter;
